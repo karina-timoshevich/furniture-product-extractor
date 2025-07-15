@@ -40,11 +40,7 @@ data_collator = DataCollatorForTokenClassification(tokenizer)
 
 
 def tokenize_and_align(examples):
-    tokenized_inputs = tokenizer(
-        examples["tokens"],
-        truncation=True,
-        is_split_into_words=True,
-    )
+    tokenized_inputs = tokenizer( examples["tokens"], truncation=True, is_split_into_words=True,)
 
     labels = []
     for i, label in enumerate(examples["labels"]):
