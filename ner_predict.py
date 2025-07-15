@@ -3,6 +3,22 @@ from difflib import SequenceMatcher
 
 MODEL_PATH = "./ner_model_1"
 
+import os
+import zipfile
+import gdown
+
+
+def download_model():
+    if not os.path.exists("ner_model_1"):
+        print("Downloading model from Google Drive...")
+        file_id = "1sOrOWSPSVWUAvyQICO6igY9ts1kAFSBw"
+        url = f"https://drive.google.com/uc?id={file_id}"
+        gdown.download(url, "ner_model_1.zip", quiet=False)
+        with zipfile.ZipFile("ner_model_1.zip", "r") as zip_ref:
+            zip_ref.extractall(".")
+        print("Model unpacked!")
+
+download_model()
 
 def clean_token(text):
     return text.replace("##", "").strip()
@@ -63,12 +79,12 @@ def remove_duplicate_phrases(text, min_len=5):
             i += 1
     return " ".join(result)
 
-    def remove_similar(products):
-        result = []
-        for p in sorted(products, key=len, reverse=True):
-            if not any(SequenceMatcher(None, p, r).ratio() > 0.85 for r in result):
-                result.append(p)
-        return result
+def remove_similar(products):
+    result = []
+    for p in sorted(products, key=len, reverse=True):
+        if not any(SequenceMatcher(None, p, r).ratio() > 0.85 for r in result):
+            result.append(p)
+    return result
 
 
 class NERPredictor:
